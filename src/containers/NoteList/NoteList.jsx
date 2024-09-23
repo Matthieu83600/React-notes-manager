@@ -11,7 +11,7 @@ export function NoteList(props) {
             {
                 noteList.map( note => {
                     return (
-                        <div className={s.card_container}>
+                        <div className={s.card_container} key={note.id}>
                             <TextCard 
                                 title={note.title}
                                 subtitle={note.created_at}
