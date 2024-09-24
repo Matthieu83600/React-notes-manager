@@ -1,7 +1,6 @@
 import { NoteList } from 'containers/NoteList/NoteList';
 import { SearchBar } from 'components/SearchBar/SearchBar';
 import { useState } from 'react';
-import s from './style.module.css';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 

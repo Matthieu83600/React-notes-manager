@@ -4,7 +4,6 @@ import { NoteForm } from 'components/NoteForm/NoteForm';
 import { useState } from 'react';
 import { NoteAPI } from 'api/note-api';
 import { updateNote, deleteNote } from 'store/note/note-slice';
-import s from './style.module.css';
 
 export function Note(props) {
     const [isEditable, setIsEditable] = useState(false);

@@ -3,7 +3,6 @@ import { NoteAPI } from 'api/note-api';
 import { useDispatch } from 'react-redux';
 import { addNote } from 'store/note/note-slice';
 import { useNavigate } from 'react-router-dom';
-import s from './style.module.css';
 
 export function NoteCreate(props) {
     const dispatch = useDispatch();
