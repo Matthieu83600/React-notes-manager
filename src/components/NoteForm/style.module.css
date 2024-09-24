@@ -9,6 +9,9 @@
 .title_input_container {
     max-width: 300px;
 }
+.content {
+    padding-bottom: 15px;
+}
 .submit_btn {
     text-align: right;
 }

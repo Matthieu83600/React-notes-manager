@@ -1,9 +1,10 @@
 import { PencilFill, TrashFill } from 'react-bootstrap-icons';
-import s from './style.module.css';
 import { ButtonPrimary } from 'components/ButtonPrimary/ButtonPrimary';
 import { useState } from 'react';
 import { ValidatorService } from 'services/form-validators';
 import { FieldError } from 'components/FieldError/FieldError';
+import { useEffect, useRef } from 'react';
+import s from './style.module.css';
 
 const VALIDATORS = {
     title: (value) => {
@@ -14,11 +15,21 @@ const VALIDATORS = {
     },
 };
 
-export function NoteForm({ title, onClickEdit, onClickTrash, onSubmit }) {
-    const [formValues, setFormValues] = useState({title: '', content: ''});
+export function NoteForm({
+    title,
+    note,
+    onClickEdit,
+    onClickTrash,
+    onSubmit,
+    isEditable=true
+}) {
+    const [formValues, setFormValues] = useState({
+        title: note?.title || '',
+        content: note?.content || ''
+    });
     const [formErrors, setFormErrors] = useState({
-        title: '',
-        content: '',
+        title: note?.title ? undefined : '',
+        content: note?.content ? undefined : '',
     });
     function updateFormValues(e) {
         setFormValues({...formValues, [e.target.name]: e.target.value});
@@ -58,6 +69,7 @@ export function NoteForm({ title, onClickEdit, onClickTrash, onSubmit }) {
                 name='title'
                 className='form-control'
                 onChange={updateFormValues}
+                value={formValues.title}
             />
             <FieldError msg={formErrors.title} />
         </div>
@@ -71,6 +83,7 @@ export function NoteForm({ title, onClickEdit, onClickTrash, onSubmit }) {
                 className='form-control'
                 rows='5' 
                 onChange={updateFormValues}
+                value={formValues.content}
             />
             <FieldError msg={formErrors.content} />
         </div>
@@ -85,6 +98,23 @@ export function NoteForm({ title, onClickEdit, onClickTrash, onSubmit }) {
             </ButtonPrimary>
         </div>
     );
+    const contentRef = useRef(null);
+    // Scrollbar horizontal
+    useEffect(() => {
+        const content = contentRef.current;
+        if (content) {
+            const handleScroll = (e) => {
+                if (e.deltaY !== 0) {
+                    e.preventDefault();
+                    content.scrollLeft += e.deltaY;
+                };
+            }
+            content.addEventListener("wheel", (handleScroll));
+            return () => {
+                content.removeEventListener("wheel", (handleScroll));
+            };
+        };
+    }, []);
     return (
         <form className={s.container}>
             <div className='row justify-content-space-between'>
@@ -94,10 +124,10 @@ export function NoteForm({ title, onClickEdit, onClickTrash, onSubmit }) {
                 {actionsIcons}
             </div>
             <div className={`mb-3 ${s.title_input_container}`}>
-                {titleInput}
+                {isEditable && titleInput}
             </div>
             <div className='mb-3'>
-                {contentInput}
+                {isEditable ? contentInput : <pre ref={contentRef} className={s.content}>{note.content}</pre>}
             </div>
             {onSubmit && submitButton}
         </form>
