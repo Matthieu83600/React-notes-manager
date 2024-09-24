@@ -3,6 +3,7 @@ import { SearchBar } from 'components/SearchBar/SearchBar';
 import { useState } from 'react';
 import s from './style.module.css';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 export function NoteBrowse(props) {
     const [searchText, setSearchText] = useState('');
@@ -23,6 +24,16 @@ export function NoteBrowse(props) {
                     <SearchBar  placeholder='Search your note...' onTextChange={setSearchText} />
                 </div>
             </div>
+            {
+                noteList?.length === 0 && (
+                    <div className='d-flex justify-content-center'>
+                        <span>
+                            You don't have any note, do you want to{" "}
+                            <Link to="/note/new">create one</Link>
+                        </span>
+                    </div>
+                )
+            }
             <NoteList noteList={filteredList}/>
         </>
     )
